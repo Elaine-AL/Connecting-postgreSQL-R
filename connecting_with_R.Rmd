@@ -1,0 +1,37 @@
+##load the R package required for connecting to the Postgresql database
+library(RPostgreSQL)
+
+
+##store the password in an object say 'passW'
+
+passW = {"******"}
+##you can put your own password above
+
+##loading the PostgreSQL drivers and storing it in object say 'drv' 
+drv = dbDriver("PostgreSQL")
+
+##creating the connection with R to the database
+con = dbConnect(drv = drv,
+                dbname = "my_db",
+                host = "localhost",
+                port = port,
+                user = "elaine",
+                password = passW 
+                )
+##ensure you have all the permissions granted to the new user, otherwise you will get a FATAL: error
+
+##remove the password object since you wont need it
+rm(passW)
+
+##check if a table exist in the db connected to. It gives a boolean result; if true then it exists, otherwise you might be reading from the wrong database
+dbExistsTable(con, "my_table")
+
+
+
+##read/query your data from the Postgresql db using the dbGetQuery() function in R then store it as a dataframe in R
+df_my_table = dbGetQuery(con, "SELECT * FROM my_table")
+
+
+
+
+####You can now do your analysis in R!!!!!!
